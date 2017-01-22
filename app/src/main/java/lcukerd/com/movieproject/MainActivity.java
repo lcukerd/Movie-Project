@@ -1,6 +1,7 @@
 package lcukerd.com.movieproject;
 
 import android.content.Context;
+import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.net.Uri;
@@ -26,12 +27,14 @@ import android.widget.LinearLayout;
 import android.widget.ScrollView;
 import android.widget.TableLayout;
 import android.widget.TableRow;
+import android.widget.Toast;
 
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.BufferedReader;
+import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
@@ -131,13 +134,14 @@ public class MainActivity extends AppCompatActivity {
 
                 for (int i=0;i<movieArray.length();i++)
                 {
-                    String Poster;
+                    String Poster,id;
                     JSONObject currentMovie = movieArray.getJSONObject(i);
 
                     Poster = currentMovie.getString(poster);
+                    id = currentMovie.getString("id");
                     //Log.d("Movie Poster link " + (i+1), Poster);
                     moviePoster PosterUrl = new moviePoster();
-                    PosterUrl.execute(Poster);
+                    PosterUrl.execute(Poster,id);
 
                 }
 
@@ -154,9 +158,11 @@ public class MainActivity extends AppCompatActivity {
     {
         private String baseURL="http://image.tmdb.org/t/p/";
         private String size="w500";
+        String MovieId;
         HttpURLConnection getposter = null;
         protected Bitmap doInBackground(String[] link)
         {
+            MovieId=link[1];
             Uri Url = Uri.parse(baseURL).buildUpon().appendEncodedPath(size).appendEncodedPath(link[0]).build();
             Log.d("URL for Poster",Url.toString());
             Bitmap Poster;
@@ -180,7 +186,7 @@ public class MainActivity extends AppCompatActivity {
             }
 
         }
-        protected void onPostExecute(Bitmap Poster)
+        protected void onPostExecute(final Bitmap Poster)
         {
             ImageButton image;
             if(i%2==0)
@@ -196,7 +202,7 @@ public class MainActivity extends AppCompatActivity {
             }
             else
             {
-                ImageButton image = new ImageButton(context);
+                image = new ImageButton(context);
                 //image.setBackgroundResource(R.drawable.pic2);
                 image.setImageBitmap(Poster);
 
@@ -204,6 +210,18 @@ public class MainActivity extends AppCompatActivity {
                 linear.addView(row);
             }
             i++;
+
+            image.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    Toast.makeText(context, MovieId, Toast.LENGTH_SHORT).show();
+                    ByteArrayOutputStream stream = new ByteArrayOutputStream();
+                    Poster.compress(Bitmap.CompressFormat.PNG, 100, stream);
+                    byte[] byteArray = stream.toByteArray();
+                    Intent detail = new Intent(context,DetailActivity.class).putExtra(Intent.EXTRA_TEXT,Data).putExtra(Intent.EXTRA_INDEX,MovieId).putExtra("poster",byteArray);
+                    startActivity(detail);
+                }
+            });
 
         }
     }

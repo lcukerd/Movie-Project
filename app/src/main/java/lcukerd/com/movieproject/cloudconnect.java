@@ -77,7 +77,29 @@ class CloudConnect extends AsyncTask<String, Void , String>
             JSONArray movieArray = movie.getJSONArray(List);
             Log.d("Movie" ,Integer.toString(movieArray.length()));
 
-            /*TableLayout linear = (TableLayout) findViewById(R.id.table);
+
+            for (int i=0;i<movieArray.length();i++)
+            {
+                String Release,Overview,Rating,Poster,Title;
+
+                JSONObject currentMovie = movieArray.getJSONObject(i);
+
+                Release = currentMovie.getString(release);
+                Overview = currentMovie.getString(overview);
+                Rating = currentMovie.getString(rating);
+                Poster = currentMovie.getString(poster);
+                Title = currentMovie.getString(title);
+                Log.d("Movie" + (i+1), Release+" "+Overview+" "+ Rating+" "+Poster+" "+Title);
+
+            }
+
+        }
+        catch (JSONException e)
+        {
+            Log.e("JSON","Error",e);
+        }
+    }
+   /*TableLayout linear = (TableLayout) findViewById(R.id.table);
             TableRow.LayoutParams param = new TableRow.LayoutParams(500,930);
             param.rightMargin=10;
             for (int i=1;i<20;i++) {
@@ -100,27 +122,5 @@ class CloudConnect extends AsyncTask<String, Void , String>
             }
 
             */
-            for (int i=0;i<movieArray.length();i++)
-            {
-                String Release,Overview,Rating,Poster,Title;
-
-                JSONObject currentMovie = movieArray.getJSONObject(i);
-
-                Release = currentMovie.getString(release);
-                Overview = currentMovie.getString(overview);
-                Rating = currentMovie.getString(rating);
-                Poster = currentMovie.getString(poster);
-                Title = currentMovie.getString(title);
-                Log.d("Movie" + (i+1), Release+" "+Overview+" "+ Rating+" "+Poster+" "+Title);
-
-            }
-
-        }
-        catch (JSONException e)
-        {
-            Log.e("JSON","Error",e);
-        }
-    }
-
 
 }
