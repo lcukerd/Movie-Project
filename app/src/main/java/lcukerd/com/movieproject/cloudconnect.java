@@ -3,6 +3,9 @@ package lcukerd.com.movieproject;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.util.Log;
+import android.widget.ImageButton;
+import android.widget.TableLayout;
+import android.widget.TableRow;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -18,7 +21,7 @@ import java.net.URL;
 
 
 
-class cloudconnect extends AsyncTask <String, Void , String>
+class CloudConnect extends AsyncTask<String, Void , String>
 {
     private HttpURLConnection urlconnection = null;
     private URL url;
@@ -43,14 +46,8 @@ class cloudconnect extends AsyncTask <String, Void , String>
                 return null;
             }
             BufferedReader reader= new BufferedReader(new InputStreamReader(inputStream));
-            StringBuffer buffer=null;
-            String line;
 
-            while ((line=reader.readLine())!=null)
-            {
-                buffer.append(line+'\n');
-            }
-            DATA=buffer.toString();
+            DATA=reader.readLine();
 
         }
         catch(IOException e)
@@ -66,7 +63,7 @@ class cloudconnect extends AsyncTask <String, Void , String>
 
     protected void onPostExecute(String encodedData)
     {
-        String Data=encodedData;
+        String Data=encodedData;                //supposed to be data memeber of outer class
         try {
             String List = "results";
 
@@ -79,6 +76,30 @@ class cloudconnect extends AsyncTask <String, Void , String>
             JSONObject movie = new JSONObject(encodedData);
             JSONArray movieArray = movie.getJSONArray(List);
             Log.d("Movie" ,Integer.toString(movieArray.length()));
+
+            /*TableLayout linear = (TableLayout) findViewById(R.id.table);
+            TableRow.LayoutParams param = new TableRow.LayoutParams(500,930);
+            param.rightMargin=10;
+            for (int i=1;i<20;i++) {
+                TableRow row = new TableRow(this);
+                row.setPaddingRelative(0,0,0,10);
+
+                ImageButton image = new ImageButton(this);
+                image.setBackgroundResource(R.drawable.pic);
+
+                row.addView(image, param);
+
+
+
+                ImageButton images = new ImageButton(this);
+                images.setBackgroundResource(R.drawable.pic2);
+
+                row.addView(images, new TableRow.LayoutParams(540,540));
+                linear.addView(row);
+
+            }
+
+            */
             for (int i=0;i<movieArray.length();i++)
             {
                 String Release,Overview,Rating,Poster,Title;
@@ -103,4 +124,3 @@ class cloudconnect extends AsyncTask <String, Void , String>
 
 
 }
-
