@@ -1,4 +1,4 @@
-package lcukerd.com.movieproject;
+package lcukerd.com.movieproject;               // Just working as a place to store old codes
 
 import android.net.Uri;
 import android.os.AsyncTask;

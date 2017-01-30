@@ -22,6 +22,8 @@ import java.util.Arrays;
 
 public class DetailActivity extends AppCompatActivity {
 
+    float scale;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -38,16 +40,10 @@ public class DetailActivity extends AppCompatActivity {
 
         Bitmap poster = BitmapFactory.decodeByteArray(byteArray, 0, byteArray.length);
 
+        scale = this.getResources().getDisplayMetrics().density;
+
         displayDetail(Data,MovieId,poster);
 
-        FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
-        fab.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
-                        .setAction("Action", null).show();
-            }
-        });
     }
     private void displayDetail(String Data,String MovieId,Bitmap poster)
     {
@@ -90,6 +86,10 @@ public class DetailActivity extends AppCompatActivity {
             Title = currentMovie.getString(mtitle);
             //Log.d("Movie" + (i+1), Release+" "+Overview+" "+ Rating+" "+Poster+" "+Title);
 
+            title.setTextSize((int) (7 * scale + 0.5f));
+            desc.setTextSize((int) (5 * scale + 0.5f));
+            rating.setTextSize((int) (5 * scale + 0.5f));
+            release.setTextSize((int) (5 * scale + 0.5f));
             title.setText(Title);
             Poster.setImageBitmap(poster);
             desc.setText(Overview);
